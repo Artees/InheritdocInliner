@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package>
+    <metadata>
+        <id>$id$</id>
+        <title>$id$</title>
+        <authors>$author$</authors>
+        <owners>$author$</owners>
+        <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+        <projectUrl>https://github.com/Artees/InheritdocInliner</projectUrl>
+        <iconUrl>http://artees.pw/img/icon.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>A command-line tool that postprocesses XML documents and replaces
+            &lt;inheritdoc/&gt; elements with actual comments.
+        </description>
+        <copyright>Copyright © Artees 2018</copyright>
+        <tags>inheritdoc xml documentation comments</tags>
+        <version>1.0.0</version>
+        <!--releaseNotes>Note</releaseNotes-->
+    </metadata>
+    <files>
+        <file src="bin\Release\*.dll" target="tools"/>
+    </files>
+</package>
