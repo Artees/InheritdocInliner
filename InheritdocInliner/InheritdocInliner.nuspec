@@ -9,8 +9,8 @@
         <projectUrl>https://github.com/Artees/InheritdocInliner</projectUrl>
         <iconUrl>http://artees.pw/img/icon.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>A command-line tool that postprocesses XML documents and replaces
-            &lt;inheritdoc/&gt; elements with actual comments.
+        <description>A command-line tool that postprocesses XML documents and replaces &lt;inheritdoc/&gt;
+            elements with actual comments.
         </description>
         <copyright>Copyright © Artees 2018</copyright>
         <tags>inheritdoc xml documentation comments</tags>

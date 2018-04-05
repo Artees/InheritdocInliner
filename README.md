@@ -14,10 +14,10 @@ or download the latest
 
 Command line arguments:
 
-| Argument              | Description                                                                                                             |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| --help                | Display the help screen.                                                                                                |
-| --version             | Display version information.                                                                                            |
-| -x, --xml (pos. 0)    | The XML document to be processed.                                                                                       |
-| -d, --dll (pos. 1)    | The assembly file for which the XML document is processed. If not specified, the path of the XML document will be used. |
-| -o, --output (pos. 2) | The path of the output XML document. If not specified, the original document will be overwritten.                       |
+| Argument                   | Description                                                                                                             |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| --help                     | Display the help screen.                                                                                                |
+| --version                  | Display version information.                                                                                            |
+| -x, --xml (pos.&nbsp;0)    | The XML document to be processed.                                                                                       |
+| -d, --dll (pos.&nbsp;1)    | The assembly file for which the XML document is processed. If not specified, the path of the XML document will be used. |
+| -o, --output (pos.&nbsp;2) | The path of the output XML document. If not specified, the original document will be overwritten.                       |
