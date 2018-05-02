@@ -7,7 +7,7 @@ using Artees.Diagnostics.BDD;
 
 namespace Artees.Tools.InheritdocInliner
 {
-    public class Inheritdoc
+    internal class Inheritdoc
     {
         private readonly XmlNode _node;
         private readonly XmlDocument _docs;

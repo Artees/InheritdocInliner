@@ -7,7 +7,7 @@
         <owners>$author$</owners>
         <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
         <projectUrl>https://github.com/Artees/InheritdocInliner</projectUrl>
-        <iconUrl>http://artees.pw/img/icon.png</iconUrl>
+        <iconUrl>https://artees.games/img/icon.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>A command-line tool that postprocesses XML documents and replaces &lt;inheritdoc/&gt;
             elements with actual comments.

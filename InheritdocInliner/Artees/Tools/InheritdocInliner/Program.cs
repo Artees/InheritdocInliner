@@ -64,57 +64,7 @@ namespace Artees.Tools.InheritdocInliner
 
         private static void Inline(Options options)
         {
-            var xmlPath = options.Xml;
-            xmlPath.Aka("XML").Should().Not().BeNull();
-            if (xmlPath == null) return;
-            var xml = new XmlDocument();
-            xml.Load(xmlPath);
-            var dllPath = Path.GetFullPath(options.Dll);
-            var dll = Assembly.LoadFile(dllPath);
-            var inheritdocs = GetInheritdocs(xml, dll);
-            Inline(inheritdocs);
-            SaveXml(xml, options.Output);
-        }
-
-        private static void SaveXml(XmlDocument xml, string newPath)
-        {
-            var settings = new XmlWriterSettings
-            {
-                Indent = true,
-                IndentChars = "\t"
-            };
-            using (var writer = XmlWriter.Create(newPath, settings))
-            {
-                xml.Save(writer);
-            }
-        }
-
-        private static List<Inheritdoc> GetInheritdocs(XmlDocument xml, Assembly dll)
-        {
-            var inheritdocs = new List<Inheritdoc>();
-            var inheritdocNodes = xml.GetElementsByTagName("inheritdoc");
-            for (var i = 0; i < inheritdocNodes.Count; i++)
-            {
-                var inheritdoc = new Inheritdoc(inheritdocNodes.Item(i), xml, dll);
-                inheritdocs.Add(inheritdoc);
-            }
-
-            return inheritdocs;
-        }
-
-        private static void Inline(ICollection<Inheritdoc> inheritdocs)
-        {
-            while (inheritdocs.Count > 0)
-            {
-                foreach (var inheritdoc in inheritdocs.ToList())
-                {
-                    var isInlined = inheritdoc.Inline();
-                    if (isInlined)
-                    {
-                        inheritdocs.Remove(inheritdoc).Should().BeTrue();
-                    }
-                }
-            }
+            Inliner.Inline(options.Xml, options.Dll, options.Output);
         }
 
         private static void Fail(IEnumerable<Error> errors)
