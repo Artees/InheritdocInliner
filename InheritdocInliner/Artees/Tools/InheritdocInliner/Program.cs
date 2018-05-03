@@ -1,9 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Xml;
 using Artees.Diagnostics.BDD;
 using CommandLine;
 

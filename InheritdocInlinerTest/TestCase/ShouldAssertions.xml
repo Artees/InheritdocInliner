@@ -19,7 +19,7 @@
         </member>
         <member name="T:Artees.Diagnostics.BDD.ShouldAssertions">
             <summary>
-                Methods and properties that help you implement invariants for your code.
+                Methods and properties that help you implement invariants for your code. 
             </summary>
         </member>
         <member name="F:Artees.Diagnostics.BDD.ShouldAssertions.Listeners">
@@ -335,7 +335,7 @@
         </member>
         <member name="M:Artees.Diagnostics.BDD.ValueDouble.BeEqual(System.Double,System.Double)">
             <summary>
-                Verifies that two values are equal considering a delta.
+                Verifies that two values are equal considering a delta. 
             </summary>
             <param name="expected">The expected value</param>
             <param name="delta">

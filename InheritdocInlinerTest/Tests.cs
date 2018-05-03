@@ -20,7 +20,7 @@ namespace InheritdocInlinerTest
             Inliner.Inline(xmlPath, dllPath, outputPath);
             var output = File.ReadAllText(outputPath);
             var expected = File.ReadAllText($"{projectPath}/TestCase/Expected.xml");
-            Assert.AreEqual(output, expected);
+            Assert.AreEqual(expected, output);
         }
     }
 }

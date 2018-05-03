@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml;
 using Artees.Diagnostics.BDD;
+using Artees.Tools.XmlDocumentationNameGetter;
 
 namespace Artees.Tools.InheritdocInliner
 {
@@ -35,7 +36,7 @@ namespace Artees.Tools.InheritdocInliner
             if (parentName == null) return null;
             var cref = GetAttribute(_node, "cref");
             if (cref != null) return GetSourceByCref(cref.Value, fullParentName);
-            return parentName[0] == "T"
+            return parentName[0] == MemberTypes.TypeInfo.GetXmlDocsName()
                 ? GetSourceByParentType(parentName[1], fullParentName)
                 : GetSourceByParentMember(parentName, fullParentName);
         }
@@ -73,24 +74,20 @@ namespace Artees.Tools.InheritdocInliner
 
         private XmlNode GetSourceByParentType(string parentName, string inheritdocMember)
         {
-            var parentTypeName = GetParentTypeName(parentName);
-            var cref = $"T:{parentTypeName}";
-            var source = GetSourceByCref(cref, inheritdocMember);
+            var parentTypeName = GetParentType(parentName).GetXmlDocsName();
+            var source = GetSourceByCref(parentTypeName, inheritdocMember);
             return source;
         }
 
-        private string GetParentTypeName(string parentName)
+        private Type GetParentType(string parentName)
         {
             var parentType = _dll.GetType(parentName);
             parentType.Aka(parentName).Should().Not().BeNull();
             if (parentType == null) return null;
-            var baseType = parentType.BaseType;
-            return GetTypeName(baseType);
-        }
-
-        private static string GetTypeName(Type type)
-        {
-            return type == null ? null : $"{type.Namespace}.{type.Name}";
+            var bt = parentType.BaseType;
+            if (bt == null) return parentType;
+            var gt = bt.IsGenericType ? bt.GetGenericTypeDefinition() : bt;
+            return gt;
         }
 
         private XmlNode GetSourceByParentMember(IReadOnlyList<string> parentName,
@@ -103,34 +100,33 @@ namespace Artees.Tools.InheritdocInliner
             var id = parentName[1].LastIndexOf('.', ibe, ibe);
             var parentWithoutMember = parentName[1].Substring(0, id);
             var memberWithoutArgs = parentName[1].Substring(id + 1, ibl - id - 1);
-            var parentTypeName = GetParentTypeName(parentWithoutMember, memberWithoutArgs);
-            var memberName = parentName[1].Substring(id, l - id);
-            var cref = $"{parentName[0]}:{parentTypeName}{memberName}";
-            var source = GetSourceByCref(cref, inheritdocMember);
-            return source;
+            var cref = GetParentMember(parentWithoutMember, memberWithoutArgs).GetXmlDocsName();
+            return GetSourceByCref(cref, inheritdocMember);
         }
 
-        private string GetParentTypeName(string parentName, string memberName)
+        private MemberInfo GetParentMember(string parentName, string memberName)
         {
             var parentType = _dll.GetType(parentName);
             parentType.Aka(parentName).Should().Not().BeNull();
-            if (parentType == null) return null;
-            var baseType = GetBaseTypeOrInterfaceWithMember(parentType, memberName);
-            return GetTypeName(baseType);
+            return parentType == null ? null : GetBaseTypeOrInterfaceMember(parentType, memberName);
         }
 
-        private static Type GetBaseTypeOrInterfaceWithMember(Type parentType, string memberName)
+        private static MemberInfo GetBaseTypeOrInterfaceMember(Type parentType, string memberName)
         {
             var type = parentType.BaseType;
-            if (type != null && type.GetMember(memberName).Length != 0) return type;
-            foreach (var interfaceType in parentType.GetInterfaces())
-            {
-                if (interfaceType.GetMember(memberName).Length == 0) continue;
-                type = interfaceType;
-                break;
-            }
+            var baseMembers = GetMember(type, memberName);
+            if (type != null && baseMembers.Length > 0) return baseMembers[0];
+            return (from interfaceType in parentType.GetInterfaces()
+                let interfaceMembers = GetMember(interfaceType, memberName)
+                where interfaceMembers.Length > 0
+                select interfaceMembers[0]).FirstOrDefault();
+        }
 
-            return type;
+        private static MemberInfo[] GetMember(IReflect type, string name)
+        {
+            const BindingFlags bindingFlags = 
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+            return type.GetMember(name, bindingFlags);
         }
 
         public bool Inline()
